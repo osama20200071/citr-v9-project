@@ -32,6 +32,7 @@ export default [
     rules: {
       "react/no-unescaped-entities": "off", // so we can write ' not forcing to &apos
       "react/prop-types": "off",
+      "no-unused-vars": "warn",
     },
   },
   prettier,
