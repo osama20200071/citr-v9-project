@@ -157,7 +157,7 @@ form input[type="radio"] {
 }
 
 form input + label {
-  height: 80px;
+  height: 40px;
   width: 80px;
   border: 1px solid #999;
   background-color: #ccc;
