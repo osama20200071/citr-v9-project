@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { getPastOrders } from "../api/getPastOrders";
+import { getPastOrder } from "../api/getPastOrder";
+import Modal from "../Modal";
+import PastOrder from "../PastOrder";
 
 export const Route = createFileRoute("/past")({
   component: PastOrdersRoute,
@@ -9,11 +12,19 @@ export const Route = createFileRoute("/past")({
 
 function PastOrdersRoute() {
   const [page, setPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState();
 
   const { data, isLoading } = useQuery({
     queryKey: ["past-orders", page],
     queryFn: () => getPastOrders(page),
     staleTime: 30000, // data becomes stale after 30 seconds
+  });
+
+  const { data: pastSelectedOrder, isLoading: isLoadingPastOrder } = useQuery({
+    queryKey: ["past-order", selectedOrder],
+    queryFn: () => getPastOrder(selectedOrder),
+    enabled: !!selectedOrder,
+    staleTime: 1000 * 60 * 60 * 24, // stale time for a day
   });
 
   if (isLoading) {
@@ -36,7 +47,10 @@ function PastOrdersRoute() {
         </thead>
         <tbody>
           {data.map((order) => (
-            <tr key={order.order_id}>
+            <tr
+              key={order.order_id}
+              onClick={() => setSelectedOrder(order.order_id)}
+            >
               <td>{order.order_id}</td>
               <td>{order.date}</td>
               <td>{order.time}</td>
@@ -53,6 +67,16 @@ function PastOrdersRoute() {
           Next
         </button>
       </div>
+
+      {selectedOrder && (
+        <Modal>
+          <PastOrder
+            isLoading={isLoadingPastOrder}
+            data={pastSelectedOrder}
+            setFocusedOrder={setSelectedOrder}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
