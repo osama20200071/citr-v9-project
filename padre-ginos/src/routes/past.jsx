@@ -1,14 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getPastOrders } from "../api/getPastOrders";
 import { getPastOrder } from "../api/getPastOrder";
 import Modal from "../Modal";
 import PastOrder from "../PastOrder";
+import ErrorBoundary from "../ErrorBoundary";
 
 export const Route = createFileRoute("/past")({
-  component: PastOrdersRoute,
+  component: PastOrderRouteWithErrorBoundary,
 });
+
+function PastOrderRouteWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <PastOrdersRoute />
+    </ErrorBoundary>
+  );
+}
 
 function PastOrdersRoute() {
   const [page, setPage] = useState(1);
@@ -26,6 +35,11 @@ function PastOrdersRoute() {
     enabled: !!selectedOrder,
     staleTime: 1000 * 60 * 60 * 24, // stale time for a day
   });
+
+  // testing the error boundary
+  // if (pastSelectedOrder) {
+  //   throw new Error("error happened");
+  // }
 
   if (isLoading) {
     return (
