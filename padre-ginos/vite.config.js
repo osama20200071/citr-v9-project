@@ -4,12 +4,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [TanStackRouterVite(), react()],
-  test: {
-    environment: "happy-dom",
-    coverage: {
-      reporter: ["html"],
-    },
-  },
   server: {
     proxy: {
       "/api": {
