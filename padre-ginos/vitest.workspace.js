@@ -9,6 +9,9 @@ export default defineWorkspace([
       name: "happy-dom", // to give those tests a label
       environment: "happy-dom",
       include: ["**/*.node.test.{js,jsx}"],
+      coverage: {
+        reporter: ["html"],
+      },
     },
   },
   // and playwright for our new browser-based tests
@@ -22,6 +25,9 @@ export default defineWorkspace([
         name: "chromium", // the browser to test in "chromium or firefox or webkit(safari) here too"
         provider: "playwright",
         enabled: true,
+      },
+      coverage: {
+        reporter: ["html"],
       },
     },
   },
