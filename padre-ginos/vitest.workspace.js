@@ -1,4 +1,4 @@
-import { defineWorkspace } from "vitest/config.js";
+import { defineWorkspace } from "vitest/config";
 
 // we are defining two evn:
 export default defineWorkspace([
