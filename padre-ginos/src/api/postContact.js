@@ -1,6 +1,6 @@
 export async function postContact(name, email, message) {
   const response = await fetch("/api/contact", {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
